@@ -2551,7 +2551,7 @@ MonoBehaviour:
   count: 0
   stepsText: {fileID: 0}
   accelText: {fileID: 0}
-  infoText: {fileID: 0}
+  initText: {fileID: 0}
   DebugText: {fileID: 0}
 --- !u!1 &1266282062
 GameObject:
@@ -2983,7 +2983,7 @@ MonoBehaviour:
   count: 0
   stepsText: {fileID: 803992099}
   accelText: {fileID: 421162050}
-  infoText: {fileID: 327201}
+  initText: {fileID: 173414673}
   DebugText: {fileID: 1176045843}
 --- !u!114 &1864093322
 MonoBehaviour:

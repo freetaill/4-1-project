@@ -17,19 +17,25 @@ public class test : MonoBehaviour
     [SerializeField]
     public Text accelText;
     [SerializeField]
-    public Text infoText;
+    public Text initText;
     [SerializeField]
     public AndroidStepCounter asc;
     [SerializeField]
     public Text DebugText;
- 
+    int FirstStep;
+    int initStep = 0;
     // Start is called before the first frame update
-    void OnEnable()
+    /*void OnEnable()
     {
         if (!Permission.HasUserAuthorizedPermission("android.permission.ACTIVITY_RECOGNITION"))
         {
             Permission.RequestUserPermission("android.permission.ACTIVITY_RECOGNITION");
         }
+    }*/
+
+    void getCount(){
+        FirstStep = StepCounter.current.stepCounter.ReadValue();
+        initText.text = FirstStep.ToString();
     }
  
     private void Start()
@@ -47,8 +53,7 @@ public class test : MonoBehaviour
         {
             InputSystem.EnableDevice(StepCounter.current);
         }
-
-        Debug.Log("Started LAS: " + LinearAccelerationSensor.current.ToString());
+        FirstStep = StepCounter.current.stepCounter.ReadValue();
     }
  
  
@@ -69,15 +74,20 @@ public class test : MonoBehaviour
  
         if (!StepCounter.current.enabled)
         {
-            infoText.text = "Stepcounter is Paused";
+            //initText.text = "Stepcounter is Paused";
             InputSystem.EnableDevice(StepCounter.current);
             //DebugText.text += "Linear Acceleration was re-enabled!!\n";
         }
         else
         {
             //DebugText.text += "Currently Enabled: " + StepCounter.current.ToString() + "\n";
-            count = StepCounter.current.stepCounter.ReadValue();
-            stepsText.text = "Steps: " + count.ToString();
+            if(FirstStep != 0){
+                count = StepCounter.current.stepCounter.ReadValue()-FirstStep;
+                stepsText.text = "Steps: " + count.ToString();
+            }
+            else{
+                getCount();
+            }
         }
     }
 
