@@ -11,9 +11,9 @@ public class Screenset : MonoBehaviour
     {
         int i_width = Screen.width;
         int i_height = Screen.height;
-        // Canvas Scaler ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
+        // Canvas Scaler ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         CanvasScaler canvasScaler = testCanvas.GetComponent<CanvasScaler>();
-        // Reference Resolution °ª ¼³Á¤
+        // Reference Resolution ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         canvasScaler.referenceResolution = new Vector2(i_width, i_height);
 
         //Camera.main.orthographicSize = testCanvas.GetComponent<CanvasScaler>().referenceResolution.y / 2.0f;

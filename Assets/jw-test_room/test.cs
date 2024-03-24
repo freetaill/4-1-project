@@ -34,11 +34,10 @@ public class test : MonoBehaviour
  
     private void Start()
     {
-        if (StepCounter.current == null)
+        if (!Permission.HasUserAuthorizedPermission("android.permission.ACTIVITY_RECOGNITION"))
         {
-            InputSystem.AddDevice<StepCounter>();
+            Permission.RequestUserPermission("android.permission.ACTIVITY_RECOGNITION");
         }
- 
         if (!LinearAccelerationSensor.current.enabled)
         {
             InputSystem.EnableDevice(LinearAccelerationSensor.current);
@@ -76,12 +75,8 @@ public class test : MonoBehaviour
         }
         else
         {
-            if (!StepCounter.current.enabled)
-            {
-                InputSystem.EnableDevice(StepCounter.current);
-            }
             //DebugText.text += "Currently Enabled: " + StepCounter.current.ToString() + "\n";
-            count += StepCounter.current.stepCounter.ReadValue();
+            count = StepCounter.current.stepCounter.ReadValue();
             stepsText.text = "Steps: " + count.ToString();
         }
     }
