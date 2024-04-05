@@ -41,4 +41,5 @@ public class characterMove : MonoBehaviour
 
         transform.LookAt(transform.position+moveVec);
     }
+    
 }
