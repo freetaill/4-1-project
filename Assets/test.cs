@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -10,9 +11,9 @@ using UnityEngine.UI;
 
 public class test : MonoBehaviour
 {
-    [SerializeField]
+    //[Header("Steps")]
     public int count = 0;
-    [SerializeField]
+    [Header("Text")]
     public Text stepsText;
     [SerializeField]
     public Text accelText;
@@ -23,7 +24,18 @@ public class test : MonoBehaviour
     [SerializeField]
     public Text DebugText;
     int FirstStep;
-    int initStep = 0;
+    int post_count = 0;
+
+    [Header("character")]
+    public GameObject player;
+
+    [Header("Move")]
+    public float moveSpeed;
+
+    public event EventHandler ValueChanged;
+
+    int k;
+
     // Start is called before the first frame update
     /*void OnEnable()
     {
@@ -53,22 +65,22 @@ public class test : MonoBehaviour
         {
             InputSystem.EnableDevice(StepCounter.current);
         }
+        count = 0;
+
         FirstStep = StepCounter.current.stepCounter.ReadValue();
     }
  
  
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (!LinearAccelerationSensor.current.enabled)
         {
             accelText.text = "The Device is not enabled";
             InputSystem.EnableDevice(LinearAccelerationSensor.current);
-            //DebugText.text += "Linear Acceleration was re-enabled!!\n";
         }
         else
         {
-            //DebugText.text += "Currently Enabled: " + LinearAccelerationSensor.current.ToString() + "\n";
             accelText.text = LinearAccelerationSensor.current.acceleration.ReadValue().ToString();
         }
  
@@ -76,18 +88,31 @@ public class test : MonoBehaviour
         {
             //initText.text = "Stepcounter is Paused";
             InputSystem.EnableDevice(StepCounter.current);
-            //DebugText.text += "Linear Acceleration was re-enabled!!\n";
         }
         else
         {
-            //DebugText.text += "Currently Enabled: " + StepCounter.current.ToString() + "\n";
             if(FirstStep != 0){
                 count = StepCounter.current.stepCounter.ReadValue()-FirstStep;
                 stepsText.text = "Steps: " + count.ToString();
+                Move();
+                post_count = count;
+                DebugText.text = player.gameObject.transform.position.ToString();
             }
             else{
                 getCount();
             }
+        }
+    }
+
+    void Move()
+    {
+        if (count > 0 && post_count != count)
+        {
+            // 입력에 따라 이동 방향 벡터 계산
+            Vector3 moveVec = transform.forward;
+
+            // 이동 벡터를 정규화하여 이동 속도와 시간 간격을 곱한 후 현재 위치에 더함
+            player.transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
         }
     }
 
