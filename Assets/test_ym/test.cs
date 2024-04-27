@@ -18,7 +18,9 @@ public class test : MonoBehaviour
     [SerializeField]
     public Text accelText;
     [SerializeField]
-    public Text initText;
+    public Text gyroText_x;
+    public Text gyroText_y;
+    public Text gyroText_z;
     [SerializeField]
     public AndroidStepCounter asc;
     [SerializeField]
@@ -31,6 +33,12 @@ public class test : MonoBehaviour
 
     [Header("Move")]
     public float moveSpeed;
+
+    public Animator act_play;
+    public Text Attack;
+    public Text Defend;
+    public int Waitingtime;
+    float timer;
 
     public event EventHandler ValueChanged;
 
@@ -47,7 +55,7 @@ public class test : MonoBehaviour
 
     void getCount(){
         FirstStep = StepCounter.current.stepCounter.ReadValue();
-        initText.text = FirstStep.ToString();
+        //initText.text = FirstStep.ToString();
     }
  
     private void Start()
@@ -65,9 +73,19 @@ public class test : MonoBehaviour
         {
             InputSystem.EnableDevice(StepCounter.current);
         }
+        
+        if(!UnityEngine.InputSystem.Gyroscope.current.enabled)
+        {
+            InputSystem.EnableDevice(UnityEngine.InputSystem.Gyroscope.current);
+        }
         count = 0;
-
+        
         FirstStep = StepCounter.current.stepCounter.ReadValue();
+
+        act_play.SetBool("Stand", false);
+
+        timer= 0;
+        Waitingtime = 1;
     }
  
  
@@ -96,7 +114,11 @@ public class test : MonoBehaviour
                 stepsText.text = "Steps: " + count.ToString();
                 Move();
                 post_count = count;
-                DebugText.text = player.gameObject.transform.position.ToString();
+                float gyro_x = UnityEngine.InputSystem.Gyroscope.current.angularVelocity.x.ReadValue();
+                gyroText_x.text = gyro_x.ToString();
+                gyroText_y.text = UnityEngine.InputSystem.Gyroscope.current.angularVelocity.y.ReadValue().ToString();
+                gyroText_z.text = UnityEngine.InputSystem.Gyroscope.current.angularVelocity.z.ReadValue().ToString();
+                animator(gyro_x);
             }
             else{
                 getCount();
@@ -114,4 +136,26 @@ public class test : MonoBehaviour
         }
     }
 
+    void animator(float gyro_x)
+    {
+        timer += Time.deltaTime;
+
+        if (timer > Waitingtime)
+        {
+            if (gyro_x < -1)
+            {
+                act_play.SetBool("Stand", false);
+                act_play.SetBool("Attack", true);
+                Attack.text = "Attack";
+                Defend.text = "";
+            }
+            else if (gyro_x > 1)
+            {
+                act_play.SetBool("Stand", false);
+                act_play.SetTrigger("Defend");
+                Attack.text = "";
+                Defend.text = "Defend";
+            }
+        }
+    }
 }
