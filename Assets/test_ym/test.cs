@@ -118,7 +118,7 @@ public class test : MonoBehaviour
                 gyroText_x.text = gyro_x.ToString();
                 gyroText_y.text = UnityEngine.InputSystem.Gyroscope.current.angularVelocity.y.ReadValue().ToString();
                 gyroText_z.text = UnityEngine.InputSystem.Gyroscope.current.angularVelocity.z.ReadValue().ToString();
-                animator(gyro_x);
+                animator_fight(gyro_x);
             }
             else{
                 getCount();
@@ -136,7 +136,7 @@ public class test : MonoBehaviour
         }
     }
 
-    void animator(float gyro_x)
+    void animator_fight(float gyro_x)
     {
         timer += Time.deltaTime;
 
