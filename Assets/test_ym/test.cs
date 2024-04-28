@@ -144,13 +144,18 @@ public class test : MonoBehaviour
         {
             if (gyro_x < -1)
             {
-                act_play.SetBool("Stand", false);
+                if(act_play.GetBool("Run") == true){
+                    act_play.SetBool("Run", false);
+                }
                 act_play.SetBool("Attack", true);
                 Attack.text = "Attack";
                 Defend.text = "";
             }
             else if (gyro_x > 1)
             {
+                if(act_play.GetBool("Run") == true){
+                    act_play.SetBool("Run", false);
+                }
                 act_play.SetBool("Stand", false);
                 act_play.SetTrigger("Defend");
                 Attack.text = "";
