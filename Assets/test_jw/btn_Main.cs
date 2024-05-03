@@ -7,7 +7,7 @@ public class btn_Main : MonoBehaviour
 {
     private void Start()
     {
-        
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
 
     public void Go_Exercise()
