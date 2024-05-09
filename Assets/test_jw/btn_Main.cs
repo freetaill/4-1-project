@@ -9,6 +9,8 @@ public class btn_Main : MonoBehaviour
 {
     private void Start()
     {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
+        
         if (!Permission.HasUserAuthorizedPermission("android.permission.ACTIVITY_RECOGNITION"))
         {
             Permission.RequestUserPermission("android.permission.ACTIVITY_RECOGNITION");
