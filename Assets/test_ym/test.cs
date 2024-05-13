@@ -41,8 +41,6 @@ public class test : MonoBehaviour
     public float Waitingtime;
     float timer;
 
-    public event EventHandler ValueChanged;
-
     int Gold;
 
     // Start is called before the first frame update

@@ -42,7 +42,7 @@ public class Player_control : MonoBehaviour
         Rotate();
         // 플레이어의 아래 방향으로 레이를 발사하여 지면과 충돌하는지 확인
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f);
-        Debug.Log(grounded);
+        //Debug.Log(grounded);
         Move();
         if (grounded && Input.GetKeyDown(KeyCode.Space))
         {

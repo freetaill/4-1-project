@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class Spawn_tree : MonoBehaviour
 
     private void Start()
     {
-        Instantiate(tree[0], transform.position, Quaternion.identity);
+        GameObject.Instantiate(tree[0], transform.position, Quaternion.identity).transform.parent = this.transform;
     }
 
     private void OnDrawGizmos()

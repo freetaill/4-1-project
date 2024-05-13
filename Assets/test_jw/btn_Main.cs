@@ -9,12 +9,11 @@ public class btn_Main : MonoBehaviour
 {
     private void Start()
     {
-        Screen.orientation = ScreenOrientation.LandscapeLeft;
-        
         if (!Permission.HasUserAuthorizedPermission("android.permission.ACTIVITY_RECOGNITION"))
         {
             Permission.RequestUserPermission("android.permission.ACTIVITY_RECOGNITION");
         }
+
         if (!LinearAccelerationSensor.current.enabled)
         {
             InputSystem.EnableDevice(LinearAccelerationSensor.current);
@@ -28,6 +27,12 @@ public class btn_Main : MonoBehaviour
         if (!UnityEngine.InputSystem.Gyroscope.current.enabled)
         {
             InputSystem.EnableDevice(UnityEngine.InputSystem.Gyroscope.current);
+        }
+
+        if (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
+        {
+            Permission.RequestUserPermission(Permission.FineLocation);
+            Permission.RequestUserPermission(Permission.CoarseLocation);
         }
     }
 
