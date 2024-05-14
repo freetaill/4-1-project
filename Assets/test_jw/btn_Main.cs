@@ -1,39 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Android;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class btn_Main : MonoBehaviour
 {
     private void Start()
     {
-        if (!Permission.HasUserAuthorizedPermission("android.permission.ACTIVITY_RECOGNITION"))
-        {
-            Permission.RequestUserPermission("android.permission.ACTIVITY_RECOGNITION");
-        }
-
-        if (!LinearAccelerationSensor.current.enabled)
-        {
-            InputSystem.EnableDevice(LinearAccelerationSensor.current);
-        }
-
-        if (!StepCounter.current.enabled)
-        {
-            InputSystem.EnableDevice(StepCounter.current);
-        }
-
-        if (!UnityEngine.InputSystem.Gyroscope.current.enabled)
-        {
-            InputSystem.EnableDevice(UnityEngine.InputSystem.Gyroscope.current);
-        }
-
-        if (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
-        {
-            Permission.RequestUserPermission(Permission.FineLocation);
-            Permission.RequestUserPermission(Permission.CoarseLocation);
-        }
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
 
     public void Go_Exercise()
