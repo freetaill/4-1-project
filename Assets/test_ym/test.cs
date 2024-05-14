@@ -15,6 +15,7 @@ public class test : MonoBehaviour
     public int count = 0;
     [Header("Text")]
     public Text stepsText;
+    public Text GoldText;
     [SerializeField]
     public Text accelText;
     [SerializeField]
@@ -37,12 +38,11 @@ public class test : MonoBehaviour
     public Animator act_play;
     public Text Attack;
     public Text Defend;
-    public int Waitingtime;
+    public float Waitingtime;
     float timer;
 
-    public event EventHandler ValueChanged;
+    int Gold;
 
-    int k;
 
     // Start is called before the first frame update
     /*void OnEnable()
@@ -82,10 +82,10 @@ public class test : MonoBehaviour
         
         FirstStep = StepCounter.current.stepCounter.ReadValue();
 
-        act_play.SetBool("Stand", false);
+        //act_play.SetBool("Stand", false);
 
-        timer= 0;
-        Waitingtime = 1;
+        timer= 1.0f;
+        Waitingtime = 1.0f;
     }
  
  
@@ -111,7 +111,9 @@ public class test : MonoBehaviour
         {
             if(FirstStep != 0){
                 count = StepCounter.current.stepCounter.ReadValue()-FirstStep;
-                stepsText.text = "Steps: " + count.ToString();
+                stepsText.text = count.ToString();
+                Gold = GameManager.instance.player.Get_coin();
+                GoldText.text = Gold.ToString();
                 Move();
                 post_count = count;
                 float gyro_x = UnityEngine.InputSystem.Gyroscope.current.angularVelocity.x.ReadValue();
@@ -130,7 +132,11 @@ public class test : MonoBehaviour
     {
         if (count > 0 && post_count != count)
         {
-            // ÀÌµ¿ º¤ÅÍ¸¦ Á¤±ÔÈ­ÇÏ¿© ÀÌµ¿ ¼Óµµ¿Í ½Ã°£ °£°ÝÀ» °öÇÑ ÈÄ ÇöÀç À§Ä¡¿¡ ´õÇÔ
+            if (!act_play.GetBool("Run"))
+            {
+                act_play.SetBool("Run", true);
+            }
+            // ï¿½Ìµï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½È­ï¿½Ï¿ï¿½ ï¿½Ìµï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             player.transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
             //player.AddForce(Vector3.forward * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
         }
@@ -140,26 +146,32 @@ public class test : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        if (timer > Waitingtime)
+        if (timer >= Waitingtime)
         {
             if (gyro_x < -1)
             {
-                if(act_play.GetBool("Run") == true){
+                if (act_play.GetBool("Run") == true)
+                {
                     act_play.SetBool("Run", false);
                 }
                 act_play.SetBool("Attack", true);
+                act_play.SetBool("Defend", false);
                 Attack.text = "Attack";
                 Defend.text = "";
+                timer = 0;
             }
             else if (gyro_x > 1)
             {
-                if(act_play.GetBool("Run") == true){
+                if (act_play.GetBool("Run") == true)
+                {
                     act_play.SetBool("Run", false);
                 }
-                act_play.SetBool("Stand", false);
-                act_play.SetTrigger("Defend");
+                //act_play.SetBool("Stand", false);
+                act_play.SetBool("Attack", false);
+                act_play.SetBool("Defend", true);
                 Attack.text = "";
                 Defend.text = "Defend";
+                timer = 0;
             }
         }
     }
