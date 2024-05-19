@@ -60,8 +60,7 @@ public class btn_Exercise : MonoBehaviour
             {
                 count = StepCounter.current.stepCounter.ReadValue() - FirstStep;
                 stepsText.text = count.ToString();
-                Gold = GameManager.instance.player.Get_coin();
-                GoldText.text = Gold.ToString();
+                GoldText.text = GameManager.instance.player.Read_coin().ToString();
                 Move();
                 post_count = count;
                 Generate_Map();
@@ -87,8 +86,8 @@ public class btn_Exercise : MonoBehaviour
             {
                 act_play.SetBool("Run", true);
             }
-            // �̵� ���͸� ����ȭ�Ͽ� �̵� �ӵ��� �ð� ������ ���� �� ���� ��ġ�� ����
-            player.transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+            // 
+            //player.transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
             player.AddForce(Vector3.forward * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
         }
     }

@@ -112,7 +112,7 @@ public class test : MonoBehaviour
             if(FirstStep != 0){
                 count = StepCounter.current.stepCounter.ReadValue()-FirstStep;
                 stepsText.text = count.ToString();
-                Gold = GameManager.instance.player.Get_coin();
+                Gold = GameManager.instance.player.Read_coin();
                 GoldText.text = Gold.ToString();
                 Move();
                 post_count = count;

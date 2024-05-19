@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Android;
 using Unity.VisualScripting;
+using UnityEngine.Diagnostics;
 
 public class GpsLocation : MonoBehaviour
 {
@@ -14,18 +15,13 @@ public class GpsLocation : MonoBehaviour
     public bool isUpdating;
 
     // 순서대로 이전값 현재값
-    float[] latitude = { -1, -1 };
-    double[,] lati_detail = new double[2,3];
-    double[] lati_total = new double[3];
-    float[] longitude = { -1, -1 };
-    double[,] longi_detail = new double[2, 3];
-    double[] longi_total = new double[3];
-    double lati_cos;
-    double lati_C;
-    double D = 2 * Math.PI * 6378.135 / 360;
+    double[] latitude = { -500.0d, 0.0d };
+    double[] longitude = { -500.0d, 0.0d };
 
     double length;
     double U_length;
+    int countTime = 0;
+
 
     private void Update()
     {
@@ -75,73 +71,70 @@ public class GpsLocation : MonoBehaviour
         else
         {
             // Access granted
-            GPSOut.text = "Location: \n" + Input.location.lastData.latitude + " \n" +
-                Input.location.lastData.longitude + " \n" +
-                Input.location.lastData.altitude + " \n" +
-                Input.location.lastData.horizontalAccuracy + " \n" +
-                Input.location.lastData.timestamp;
+            double distence = Getresult();
 
-            Getresult();
-            U_length =  Math.Sqrt(Math.Pow((Math.Floor(lati_total[0]) * lati_C) +
-                (Math.Floor(lati_total[1]) * lati_C / 60) + (lati_total[2] + lati_C / 360), 2) +
-                Math.Pow((Math.Floor(longi_total[0]) * D) + (Math.Floor(longi_total[1]) * D / 60) +
-                (longi_total[2] * D / 360), 2));
+            if(distence > 5 || (length/countTime) > 1.6) 
+            { 
+                U_length = Math.Round(distence, 6);
+                countTime += 3;
+            }
+            else { U_length = 0; }
+
+            GPSUpdateLength.text = U_length.ToString();
+
             length += U_length;
-            GPSLength.text = "" + lati_total[0] + " " + lati_total[1] + " " + lati_total[2] + " \n"
-                + longi_total[0] + " " + longi_total[1] + " " + longi_total[2];
-            GPSLength.text = "" + U_length;
-            Update_location();
-            InvokeRepeating("UpdateGPSData", 0.5f, 1f);
+            U_length = 0;
+            GPSLength.text = "" + length;
         }
 
         isUpdating = !isUpdating;
         Input.location.Stop();
     }// end of GPS
 
-    void Getresult()
+    double Getresult()
     {
-        if (latitude[0] == -1)
+        double dist = 0.0d;
+        if (latitude[0] == -500.0d)
         {
-            latitude[0] = Input.location.lastData.latitude;
-            lati_detail[0, 0] = latitude[0];
-            lati_detail[0, 1] = (latitude[0] - Math.Floor(lati_detail[0,0])) * 60;
-            lati_detail[0, 2] = (lati_detail[0,1] - Math.Floor(lati_detail[0, 1])) * 60;
-
-            longitude[0] = Input.location.lastData.longitude;
-            longi_detail[0, 0] = longitude[0];
-            longi_detail[0, 1] = (longitude[0] - Math.Floor(longi_detail[0, 0])) * 60;
-            longi_detail[0, 2] = (longi_detail[0, 1] - Math.Floor(longi_detail[0, 1])) * 60;
+            latitude[0] = Math.Round(Input.location.lastData.latitude, 6);
+            longitude[0] = Math.Round(Input.location.lastData.longitude, 6);
         }
         else {
-            latitude[1] = Input.location.lastData.latitude;
-            lati_detail[1, 0] = latitude[0];
-            lati_detail[1, 1] = (latitude[0] - Math.Floor(lati_detail[0, 0])) * 60;
-            lati_detail[1, 2] = (lati_detail[0, 1] - Math.Floor(lati_detail[0, 1])) * 60;
-            lati_total[0] = Math.Floor(lati_detail[0, 0] - lati_detail[1, 0]);
-            lati_total[1] = Math.Floor(lati_detail[0, 1] - lati_detail[1, 1]);
-            lati_total[2] = (lati_detail[0, 2] - lati_detail[1, 2]);
+            latitude[1] = Math.Round(Input.location.lastData.latitude, 6);
+            longitude[1] = Math.Round(Input.location.lastData.longitude, 6);
+            GPSOut.text = latitude[0] + "\n" + latitude[1] + "\n\n" + longitude[0] + "\n" + longitude[1];
 
-            longitude[1] = Input.location.lastData.longitude;
-            longi_detail[1, 0] = longitude[0];
-            longi_detail[1, 1] = (longitude[0] - Math.Floor(longi_detail[0, 0])) * 60;
-            longi_detail[1, 2] = (longi_detail[0, 1] - Math.Floor(longi_detail[0, 1])) * 60;
-            longi_total[0] = Math.Floor(longi_detail[0, 0] - longi_detail[1, 0]);
-            longi_total[1] = Math.Floor(longi_detail[0, 1] - longi_detail[1, 1]);
-            longi_total[2] = (longi_detail[0, 2] - longi_detail[1, 2]);
+            dist = Distance(latitude[0], longitude[0], latitude[1], longitude[1]);
 
-            lati_cos = ((int)latitude[0] + (int)latitude[1]) / 2;
-            lati_C = lati_cos * D;
+            latitude[0] = latitude[1]; 
+            longitude[0] = longitude[1];
         }
+
+        return dist;
     }
-    void Update_location()
+
+    double Distance(double p_lat, double p_lon, double now_lat, double now_lon)
     {
-        for(int i = 0; i< 3; i++)
-        {
-            for(int j = 0; j < 2; j++)
-            {
-                lati_detail[j,i] = lati_detail[j,i];
-                longi_detail[j, i] = longi_detail[j,i];
-            }
-        }
+        double dist = 0.0d;
+        double theta = p_lon- now_lon;
+
+        dist = Math.Sin(deg2rad(p_lat)) * Math.Sin(deg2rad(now_lat)) +
+            Math.Cos(deg2rad(p_lat)) * Math.Cos(deg2rad(now_lat)) * Math.Cos(deg2rad(theta));
+        dist = Math.Acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        dist = dist * 1.609344 * 1000;
+
+        return dist;
+    }
+
+    double deg2rad(double deg)
+    {
+        return (double)(deg * Math.PI / (double)180.0d);
+    }
+
+    double rad2deg(double rad)
+    {
+        return (double)(rad * (double)180.0d / Math.PI);
     }
 }

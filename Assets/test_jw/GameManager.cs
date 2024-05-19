@@ -7,26 +7,58 @@ using UnityEngine;
 public class Player
 {
     string name;
-    int steps = 0;
+
+    int total_steps = 0;
+    int top = 0;
+    int[] Daily_steps = new int[100];
+
     int level = 1;
     int exp = 0;
-    int Gold = 0;
+    int coins = 0;
 
+    // [0]: 체력, [1]: 힘
+    int[] status = new int[2];
+
+    //세이브 불러오기
     public void insert_Data(int Get_steps)
     {
-        steps = Get_steps;
+        Daily_steps[top] += Get_steps;
         //int x = steps / level;
         //level = (int)System.Math.Log(level) + 100;
     }
-    public void insert_coin(int Get_coins)
+
+    // 걸음 수, 레벨 관리
+    void Get_steps(int steps)
     {
-        Gold += Get_coins;
+        
     }
 
-    public int Get_coin()
+    int Read_steps() { return Daily_steps[top]; }
+
+    int Read_level() { return level; }
+
+    int Read_exp() { return exp; }
+
+    //재화 관리
+    public void Add_coin(int Add_coins)
     {
-        return Gold;
+        coins += Add_coins;
     }
+
+    public int Read_coin() { return coins; }
+
+    // 캐릭터 능력치 관리
+    void Write_status() { }
+
+    //캐릭터 아이템 관리
+    void Get_items(Item item) { }
+
+}
+
+public class Item
+{
+    int id;
+    string name;
 }
 
 public class GameManager : MonoBehaviour

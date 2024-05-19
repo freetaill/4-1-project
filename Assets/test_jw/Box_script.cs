@@ -22,8 +22,7 @@ public class Box_script : MonoBehaviour
     {
         if (isPlayerEnter && !isCollided)
         {
-            //gameObject.SetActive(false);
-            //GameManager.instance.player.insert_coin(goldAmount);
+            GameManager.instance.player.Add_coin(goldAmount);
             breakBox.Play();
             Destroy(gameObject, breakBox.clip.length);
             isCollided = true;
