@@ -11,6 +11,7 @@ public class OptionManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        exitGame();
         transform.localScale = Vector3.one * 0.1f;
       
         _popup.SetActive(false); // 시작할때 팝업 비활성화
@@ -24,5 +25,14 @@ public class OptionManager : MonoBehaviour
      public void closeOption(){
         _popup.SetActive(false);
         Time.timeScale = 1f;
+     }
+     public void exitGame(){
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
+        }
      }
 }
