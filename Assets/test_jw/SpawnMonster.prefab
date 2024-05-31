@@ -45,7 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2934f7b53ba9bfd4fa9279c612727064, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Monster: []
+  Monster:
+  - {fileID: 7427070853888570003, guid: dcc982307a817354fafb192abcd9b917, type: 3}
+  - {fileID: 4245915190017150719, guid: cbc814ca6b730954b8a5e3641bde01c9, type: 3}
+  - {fileID: 264213370537990050, guid: 7162793d91fb69744a25a3a0371894ba, type: 3}
+  - {fileID: 7153141402127884706, guid: a4ec793513574cd49719c4055b630e2b, type: 3}
+  - {fileID: 6753617674297473082, guid: 24a0663f813d4beb91fc0c6b1e8fef36, type: 3}
+  - {fileID: 16829958793894433, guid: 6be18c83797e9b14cb2dc9160b155d89, type: 3}
+  - {fileID: 61258325561811606, guid: dadecae318be19749ac4fbd62bd9a632, type: 3}
+  - {fileID: 8172442304542317006, guid: 6e4019dcbde26c8408f888128d0a9a67, type: 3}
 --- !u!135 &3143141776959511556
 SphereCollider:
   m_ObjectHideFlags: 0

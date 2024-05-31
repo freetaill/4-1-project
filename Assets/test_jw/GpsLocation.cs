@@ -21,18 +21,9 @@ public class GpsLocation : MonoBehaviour
     double length;
     double U_length;
     int countTime = 0;
+    int steps;
 
-
-    private void Update()
-    {
-        if (!isUpdating)
-        {
-            StartCoroutine(Getlocation());
-            isUpdating = !isUpdating;
-        }
-    }
-
-    IEnumerator Getlocation()
+    public IEnumerator Getlocation_Run(double speed)
     {
         if (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
         {
@@ -73,12 +64,13 @@ public class GpsLocation : MonoBehaviour
             // Access granted
             double distence = Getresult();
 
-            if(distence > 5 || (length/countTime) > 1.6) 
+            if(distence > speed && distence < (speed * 3)) 
             { 
                 U_length = Math.Round(distence, 6);
-                countTime += 3;
             }
-            else { U_length = 0; }
+            else { U_length = length / countTime; }
+
+            countTime += 3 - Maxwait;
 
             GPSUpdateLength.text = U_length.ToString();
 

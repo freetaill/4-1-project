@@ -16,8 +16,8 @@ public class Player
     int exp = 0;
     int coins = 0;
 
-    // [0]: 체력, [1]: 힘
-    int[] status = new int[2];
+    // [0]: 공격력, [1]: 체력, [2]: 방어력
+    int[] status = new int[3];
 
     //세이브 불러오기
     public void insert_Data(int Get_steps)
@@ -28,16 +28,16 @@ public class Player
     }
 
     // 걸음 수, 레벨 관리
-    void Get_steps(int steps)
+    public void Get_steps(int steps)
     {
-        
+        Daily_steps[top] = steps;
     }
 
-    int Read_steps() { return Daily_steps[top]; }
+    public int Read_steps() { return Daily_steps[top]; }
 
-    int Read_level() { return level; }
+    public int Read_level() { return level; }
 
-    int Read_exp() { return exp; }
+    public int Read_exp() { return exp; }
 
     //재화 관리
     public void Add_coin(int Add_coins)
@@ -48,10 +48,10 @@ public class Player
     public int Read_coin() { return coins; }
 
     // 캐릭터 능력치 관리
-    void Write_status() { }
+    public void Write_status() { }
 
     //캐릭터 아이템 관리
-    void Get_items(Item item) { }
+    public void Get_items(Item item) { }
 
 }
 
@@ -86,25 +86,21 @@ public class GameManager : MonoBehaviour
         path = Application.dataPath + "/save";
     }
 
-    /*public void save()
+    public void save()
     {
-        string data = JsonUtility.ToJson(nowPlayer) + "/" + JsonUtility.ToJson(nowAnimal) + "/"
-            + JsonUtility.ToJson(nowranking);
-        File.WriteAllText(path + nowSlot.ToString(), data);
+        string data = JsonUtility.ToJson(player);
+        File.WriteAllText(path + "save", data);
     }
 
     public void load()
     {
-        string data = File.ReadAllText(path + nowSlot.ToString());
+        string data = File.ReadAllText(path);
         string[] datasplit = data.Split('/');
-        nowPlayer = JsonUtility.FromJson<Player>(datasplit[0]);
-        nowAnimal = JsonUtility.FromJson<Animal>(datasplit[1]);
-        nowranking = JsonUtility.FromJson<Ranking>(datasplit[2]);
+        player = JsonUtility.FromJson<Player>(datasplit[0]);
     }
 
     public void DataClear()
     {
-        nowSlot = -1;
-        nowPlayer = new Player();
-    }*/
+        player = new Player();
+    }
 }

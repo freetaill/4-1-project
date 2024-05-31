@@ -215,6 +215,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Optaion
       objectReference: {fileID: 0}
+    - target: {fileID: 5001663452572831878, guid: 0fcd89ed1b3a05346a468e029a4698cc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5513398423330914091, guid: 0fcd89ed1b3a05346a468e029a4698cc,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Android;
 
 public class btn_Exercise : MonoBehaviour
 {
@@ -23,6 +24,11 @@ public class btn_Exercise : MonoBehaviour
     [Header("Move")]
     public float moveSpeed;
 
+    delegate IEnumerator exer_mode(double speed);
+    public GpsLocation GpsLocation;
+    bool isUpdating;
+    double Player_move_speed = 1.6d;
+
     float Waitingtime;
     float timer;
     int FirstStep;
@@ -38,8 +44,10 @@ public class btn_Exercise : MonoBehaviour
         count = 0;
         timer = 1.0f;
         Waitingtime = 1.0f;
+        moveSpeed= 10.0f;
         GameObject.Instantiate(Map, new Vector3(0, 0, nowGenvec), Quaternion.identity).transform.parent = Ground.transform;
     }
+
     private void Update()
     {
         Generate_Map();
@@ -47,6 +55,12 @@ public class btn_Exercise : MonoBehaviour
         {
             Debug.Log("The Device is not enabled");
             InputSystem.EnableDevice(LinearAccelerationSensor.current);
+        }
+
+        if (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
+        {
+            Permission.RequestUserPermission(Permission.FineLocation);
+            Permission.RequestUserPermission(Permission.CoarseLocation);
         }
 
         if (!StepCounter.current.enabled)
@@ -59,10 +73,16 @@ public class btn_Exercise : MonoBehaviour
             if (FirstStep != 0)
             {
                 count = StepCounter.current.stepCounter.ReadValue() - FirstStep;
+                GameManager.instance.player.Get_steps(count);
                 stepsText.text = count.ToString();
                 GoldText.text = GameManager.instance.player.Read_coin().ToString();
                 Move();
-                post_count = count;
+                if (post_count != count && !isUpdating)
+                {
+                    GpsLocation.StartCoroutine(GpsLocation.Getlocation_Run(Player_move_speed));
+                    isUpdating = !isUpdating;
+                    post_count = count;
+                }
                 Generate_Map();
             }
             else
@@ -86,8 +106,7 @@ public class btn_Exercise : MonoBehaviour
             {
                 act_play.SetBool("Run", true);
             }
-            // 
-            //player.transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+            player.transform.Translate(Vector3.forward * moveSpeed * 0.05f * Time.deltaTime);
             player.AddForce(Vector3.forward * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
         }
     }
@@ -104,6 +123,25 @@ public class btn_Exercise : MonoBehaviour
         {
             GameObject obj = Ground.transform.GetChild(0).gameObject;
             Destroy(obj);
+        }
+    }
+
+    void Exercise_mode(int mode)
+    {
+        if(mode == 0)
+        {
+            //걷기
+            Player_move_speed = 1.6d;
+        }
+        else if(mode == 1)
+        {
+            //달리기
+            Player_move_speed = 2.1d;
+        }
+        else if (mode == 2)
+        {
+            // 자전거
+            Player_move_speed = 4d;
         }
     }
 
