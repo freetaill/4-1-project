@@ -147,6 +147,7 @@ public class btn_Exercise : MonoBehaviour
 
     public void Go_Main()
     {
+        GameManager.instance.save();
         SceneManager.LoadScene("Main_Scene");
     }
 }

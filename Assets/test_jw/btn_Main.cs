@@ -36,6 +36,9 @@ public class btn_Main : MonoBehaviour
             Permission.RequestUserPermission(Permission.FineLocation);
             Permission.RequestUserPermission(Permission.CoarseLocation);
         }
+
+        GameManager.instance.load();
+
     }
 
     public void Go_Exercise()

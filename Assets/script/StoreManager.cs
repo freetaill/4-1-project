@@ -20,19 +20,3 @@ public class StoreManager : MonoBehaviour
       };
     }
 }
-
-[System.Serializable]
-public class ItemData
-{
-    public string itemName;
-    public int itemPrice;
-
-    public Sprite img;
-
-    public ItemData(string itemName, int itemPrice, Sprite img)
-    {
-        this.itemName = itemName;
-        this.itemPrice = itemPrice;
-        this.img = img;
-    }
-}

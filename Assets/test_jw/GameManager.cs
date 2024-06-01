@@ -51,23 +51,27 @@ public class Player
     public void Write_status() { }
 
     //캐릭터 아이템 관리
-    public void Get_items(Item item) { }
-
 }
 
-public class Item
+public class ItemData
 {
-    int id;
-    string name;
+    public string itemName;
+    public int itemPrice;
+
+    public Sprite img;
+
+    public ItemData(string itemName, int itemPrice, Sprite img)
+    {
+        this.itemName = itemName;
+        this.itemPrice = itemPrice;
+        this.img = img;
+    }
 }
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public Player player = new Player();
-
-    private int steps = 0;
-    private int exe = 0;
 
     string path;
 
@@ -83,24 +87,32 @@ public class GameManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
 
-        path = Application.dataPath + "/save";
+        path = Application.persistentDataPath;
     }
 
     public void save()
     {
-        string data = JsonUtility.ToJson(player);
-        File.WriteAllText(path + "save", data);
+        var data = JsonUtility.ToJson(player);
+        File.WriteAllText(path + "/save01.json", data);
     }
 
     public void load()
     {
-        string data = File.ReadAllText(path);
-        string[] datasplit = data.Split('/');
-        player = JsonUtility.FromJson<Player>(datasplit[0]);
+        if (File.Exists(path + "/save01.json"))
+        {
+            var data = File.ReadAllText(path + "/save01.json");
+            string[] datasplit = data.Split('/');
+            player = JsonUtility.FromJson<Player>(datasplit[0]);
+        }
+        else
+        {
+            save();
+        }
     }
 
     public void DataClear()
     {
         player = new Player();
+        File.Delete(path + "/save01.json");
     }
 }
