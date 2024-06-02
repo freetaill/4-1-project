@@ -6,6 +6,7 @@ using UnityEngine;
 public class OptionManager : MonoBehaviour
 {
      public GameObject _popup;
+     public GameObject _exitPopup;
      public Animator anim;
      
     // Start is called before the first frame update
@@ -15,6 +16,7 @@ public class OptionManager : MonoBehaviour
         transform.localScale = Vector3.one * 0.1f;
       
         _popup.SetActive(false); // 시작할때 팝업 비활성화
+        _exitPopup.SetActive(false);
     }
     public void openOption(){
         anim = _popup.GetComponent<Animator>();
@@ -31,8 +33,14 @@ public class OptionManager : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Escape))
             {
-                Application.Quit();
+                _exitPopup.SetActive(true);
             }
         }
+     }
+     public void exitCancel(){
+        _exitPopup.SetActive(false);
+     }
+     public void exit(){
+        Application.Quit();
      }
 }

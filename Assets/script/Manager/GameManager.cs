@@ -7,6 +7,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
+public interface ILoader<Key, Value>
+{
+    Dictionary<Key, Value> MakeDict();
+}
+
 [System.Serializable]
 public class Player
 {
@@ -67,19 +72,21 @@ public class Player
     //캐릭터 아이템 관리
 }
 
-public class ItemData
+[System.Serializable]
+public class StoreData
+{
+    public List<StoreItem> items;
+}
+
+[System.Serializable]
+public class StoreItem
 {
     public string itemName;
+    public int itemID;
     public int itemPrice;
+    public string desc;
 
-    public Sprite img;
-
-    public ItemData(string itemName, int itemPrice, Sprite img)
-    {
-        this.itemName = itemName;
-        this.itemPrice = itemPrice;
-        this.img = img;
-    }
+    public string spritePath;
 }
 
 public class GameManager : MonoBehaviour

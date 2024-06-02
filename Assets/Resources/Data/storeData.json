@@ -1,0 +1,18 @@
+{
+    "items": [
+        {
+            "itemName": "전설의 검",
+            "itemID": 1,
+            "price": 100.0,
+            "description": "A sharp blade.",
+            "spritePath": "ItemImg/Sword"
+        },
+        {
+            "itemName": "전설의 방패",
+            "itemID": 2,
+            "price": 150.0,
+            "description": "A sturdy shield.",
+            "spritePath": "ItemImg/Shield"
+        }
+    ]
+}

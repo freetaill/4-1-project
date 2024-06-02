@@ -9,17 +9,19 @@ public class Merchandise : MonoBehaviour
 {
     public int index;
     public Image merch_img;
-    public Text desc;
+    public Text itemName;
 
     void Awake(){
         merch_img = transform.Find("MerchandiseImage").GetComponent<Image>();
-        //컴포넌트 추가시 코드도 추가.
+        itemName = transform.Find("ItemName").GetComponent<Text>();
     }
 
 
-    public void Init(int index,ItemData item){
+    public void Init(int index,StoreItem item){
         this.index = index;
-        merch_img.sprite = item.img;
+        merch_img.sprite = Resources.Load<Sprite>(item.spritePath);
+        itemName.text=item.itemName;
+        print("hello");
     }
 
     
