@@ -75,6 +75,7 @@ public class GpsLocation : MonoBehaviour
             //GPSUpdateLength.text = U_length.ToString();
 
             length += U_length;
+            GameManager.instance.player.Get_lengths(length);
             U_length = 0;
             //GPSLength.text = "" + length;
         }

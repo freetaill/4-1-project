@@ -901,6 +901,10 @@ MonoBehaviour:
   Map: {fileID: 5488392516806617745, guid: 33adf64ccc0dc83408eb64ce963860f5, type: 3}
   Ground: {fileID: 1648671896}
   moveSpeed: 200
+  GpsLocation: {fileID: 0}
+  GPSOut: {fileID: 1244424595}
+  GPSLength: {fileID: 1470882526}
+  GPSUpdateLength: {fileID: 1822503557}
 --- !u!114 &404578367
 MonoBehaviour:
   m_ObjectHideFlags: 0
