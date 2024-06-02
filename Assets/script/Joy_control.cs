@@ -32,9 +32,9 @@ public class Joy_control : MonoBehaviour
             return;
         }
 
-        Quaternion dirQuat = Quaternion.LookRotation(moveVec);
-        Quaternion moveQuat = Quaternion.Slerp(rigid.rotation, dirQuat, 0.3f);
-        rigid.MoveRotation(moveQuat);
+        //Quaternion dirQuat = Quaternion.LookRotation(moveVec);
+        //Quaternion moveQuat = Quaternion.Slerp(rigid.rotation, dirQuat, 0.3f);
+        //rigid.MoveRotation(moveQuat);
     }
 
     private void LateUpdate()

@@ -50,6 +50,8 @@ public class BattleManager : MonoBehaviour
     private void Start()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
+        player = player.GetComponent<Rigidbody>();
+        act_play = act_play.GetComponent<Animator>();
         Act_timer = 0.1f;
         Act_Waitingtime = 0.1f;
         Mob_time= 0.5f;
@@ -60,21 +62,21 @@ public class BattleManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!UnityEngine.InputSystem.Gyroscope.current.enabled)
+        /*if (!UnityEngine.InputSystem.Gyroscope.current.enabled)
         {
             Debuglog.text = "Error";
             InputSystem.EnableDevice(UnityEngine.InputSystem.Gyroscope.current);
-        }
-        else
+        }*/
+        if(true)
         {
             Act_timer += Time.deltaTime;
             Mob_time += Time.deltaTime;
             timer += Time.deltaTime;
-            Gold = GameManager.instance.player.Read_coin();
+            //Gold = GameManager.instance.player.Read_coin();
             GoldText.text = Gold.ToString();
-            gyro_x = UnityEngine.InputSystem.Gyroscope.current.angularVelocity.x.ReadValue();
-            gyroText_x.text = gyro_x.ToString();
-            animator_fight(gyro_x);
+            //gyro_x = UnityEngine.InputSystem.Gyroscope.current.angularVelocity.x.ReadValue();
+            //gyroText_x.text = gyro_x.ToString();
+            //animator_fight(gyro_x);
             Monster_Spown();
         }
     }
@@ -88,23 +90,6 @@ public class BattleManager : MonoBehaviour
 
     void animator_fight(float Gyro_x)
     {
-        float x = joystick.Horizontal;
-        float z = joystick.Vertical;
-
-        moveVec = new Vector3(x, 0, z) * moveSpeed * Time.deltaTime;
-        player.MovePosition(player.position + moveVec);
-
-        if (moveVec.sqrMagnitude == 0)
-        {
-            return;
-        }
-
-        Quaternion dirQuat = Quaternion.LookRotation(moveVec);
-        Quaternion moveQuat = Quaternion.Slerp(player.rotation, dirQuat, 0.3f);
-        player.MoveRotation(moveQuat);
-
-        act_play.SetFloat("Run", moveVec.sqrMagnitude);
-
         if (Act_timer >= Act_Waitingtime)
         {
             Attack_range.SetActive(false);
