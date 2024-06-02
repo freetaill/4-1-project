@@ -48,7 +48,7 @@ public class GpsLocation : MonoBehaviour
         // service didn't init in 20 sec
         if (Maxwait < 1)
         {
-            GPSOut.text = "Time Out";
+            //GPSOut.text = "Time Out";
             print("timed out");
             yield break;
         }
@@ -56,7 +56,7 @@ public class GpsLocation : MonoBehaviour
         // connection failed
         if (Input.location.status == LocationServiceStatus.Failed)
         {
-            GPSOut.text = "Unable to determine device location";
+            //GPSOut.text = "Unable to determine device location";
             yield break;
         }
         else
@@ -72,11 +72,11 @@ public class GpsLocation : MonoBehaviour
 
             countTime += 3 - Maxwait;
 
-            GPSUpdateLength.text = U_length.ToString();
+            //GPSUpdateLength.text = U_length.ToString();
 
             length += U_length;
             U_length = 0;
-            GPSLength.text = "" + length;
+            //GPSLength.text = "" + length;
         }
 
         isUpdating = !isUpdating;

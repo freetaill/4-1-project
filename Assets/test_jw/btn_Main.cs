@@ -38,6 +38,7 @@ public class btn_Main : MonoBehaviour
         }
 
         GameManager.instance.load();
+        GameManager.instance.save();
 
     }
 

@@ -29,6 +29,10 @@ public class btn_Exercise : MonoBehaviour
     bool isUpdating;
     double Player_move_speed = 1.6d;
 
+    public Text GPSOut;
+    public Text GPSLength;
+    public Text GPSUpdateLength;
+
     float Waitingtime;
     float timer;
     int FirstStep;

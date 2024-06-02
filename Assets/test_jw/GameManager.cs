@@ -2,22 +2,29 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
+[System.Serializable]
 public class Player
 {
-    string name;
+    public string name = "defo";
+    public int top = 0;
 
-    int total_steps = 0;
-    int top = 0;
-    int[] Daily_steps = new int[100];
+    public int total_steps = 0;
+    public int[] Daily_steps = Enumerable.Repeat<int>(0, 100).ToArray<int>();
 
-    int level = 1;
-    int exp = 0;
-    int coins = 0;
+    public double total_lengths = 0;
+    public double[] Daily_lengths = Enumerable.Repeat<double>(0, 100).ToArray<double>();
+
+    public int level = 1;
+    public int exp = 0;
+    public int coins = 0;
 
     // [0]: 공격력, [1]: 체력, [2]: 방어력
-    int[] status = new int[3];
+    public int[] status = Enumerable.Repeat<int>(1, 3).ToArray<int>();
 
     //세이브 불러오기
     public void insert_Data(int Get_steps)
@@ -34,6 +41,13 @@ public class Player
     }
 
     public int Read_steps() { return Daily_steps[top]; }
+
+    public void Get_lengths(double lengths)
+    {
+        Daily_lengths[top] = lengths;
+    }
+
+    public double Read_length() { return Daily_lengths[top]; }
 
     public int Read_level() { return level; }
 
@@ -70,10 +84,14 @@ public class ItemData
 
 public class GameManager : MonoBehaviour
 {
+
     public static GameManager instance;
+
     public Player player = new Player();
 
     string path;
+
+    public Text output;
 
     private void Awake()
     {
@@ -90,19 +108,22 @@ public class GameManager : MonoBehaviour
         path = Application.persistentDataPath;
     }
 
+    [ContextMenu("To Json Data")]
     public void save()
     {
-        var data = JsonUtility.ToJson(player);
-        File.WriteAllText(path + "/save01.json", data);
+        string data = JsonUtility.ToJson(player);
+        File.WriteAllText(path + "/Playerdata.json", data);
+        //File.WriteAllText("C:\\Users\\prl41\\Downloads\\4-1-project\\Assets\\test_jw" + "/save01.json", data);
     }
 
     public void load()
     {
-        if (File.Exists(path + "/save01.json"))
+        if (File.Exists(path + "/Playerdata.json"))
         {
-            var data = File.ReadAllText(path + "/save01.json");
-            string[] datasplit = data.Split('/');
-            player = JsonUtility.FromJson<Player>(datasplit[0]);
+            var data = File.ReadAllText(path + "/Playerdata.json");
+            player = JsonUtility.FromJson<Player>(data);
+
+            output.text = "clear";
         }
         else
         {
@@ -113,6 +134,6 @@ public class GameManager : MonoBehaviour
     public void DataClear()
     {
         player = new Player();
-        File.Delete(path + "/save01.json");
+        File.Delete(path + "/Playerdata.json");
     }
 }
