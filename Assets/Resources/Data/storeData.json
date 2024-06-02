@@ -3,16 +3,23 @@
         {
             "itemName": "전설의 검",
             "itemID": 1,
-            "price": 100.0,
+            "itemPrice": 10000.0,
             "description": "A sharp blade.",
             "spritePath": "ItemImg/Sword"
         },
         {
             "itemName": "전설의 방패",
             "itemID": 2,
-            "price": 150.0,
+            "itemPrice": 50000.0,
             "description": "A sturdy shield.",
             "spritePath": "ItemImg/Shield"
+        },
+		{
+            "itemName": "전설의 신발",
+            "itemID": 3,
+            "itemPrice": 100000.0,
+            "description": "A nice shoes.",
+            "spritePath": "ItemImg/boots"
         }
     ]
 }

@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Battle_Scene.unity
     guid: cd05aae7df49ebc49bb207759c2cb186
   - enabled: 1
-    path: Assets/Scenes/Stroe_scene.unity
+    path: Assets/Scenes/Store_Scene.unity
     guid: fb408b1353f193f42a65cf79f5f092a7
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000,

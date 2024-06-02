@@ -51,4 +51,9 @@ public class MainManager : MonoBehaviour
     {
         SceneManager.LoadScene("Battle_Scene");
     }
+
+    public void Go_Store ()
+    {
+        SceneManager.LoadScene("Store_Scene");
+    }
 }
