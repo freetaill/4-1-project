@@ -36,7 +36,7 @@ public class BattleManager : MonoBehaviour
 
     float Act_Waitingtime;
     float Act_timer;
-    float gyro_x;
+    public float gyro_x;
 
     public GameObject[] Monster;
     public GameObject Monsterlist;
@@ -52,8 +52,8 @@ public class BattleManager : MonoBehaviour
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         player = player.GetComponent<Rigidbody>();
         act_play = act_play.GetComponent<Animator>();
-        Act_timer = 0.1f;
-        Act_Waitingtime = 0.1f;
+        Act_timer = 1.0f;
+        Act_Waitingtime = 1.0f;
         Mob_time= 0.5f;
         Mob_delay = 0.5f;
     }
@@ -62,30 +62,29 @@ public class BattleManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        /*if (!UnityEngine.InputSystem.Gyroscope.current.enabled)
+        if (!UnityEngine.InputSystem.Gyroscope.current.enabled)
         {
             Debuglog.text = "Error";
             InputSystem.EnableDevice(UnityEngine.InputSystem.Gyroscope.current);
-        }*/
+        }
         if(true)
         {
             Act_timer += Time.deltaTime;
             Mob_time += Time.deltaTime;
             timer += Time.deltaTime;
-            //Gold = GameManager.instance.player.Read_coin();
+            Gold = GameManager.instance.player.Read_coin();
             GoldText.text = Gold.ToString();
-            //gyro_x = UnityEngine.InputSystem.Gyroscope.current.angularVelocity.x.ReadValue();
-            //gyroText_x.text = gyro_x.ToString();
-            //animator_fight(gyro_x);
+            gyro_x = UnityEngine.InputSystem.Gyroscope.current.angularVelocity.x.ReadValue();
+            gyroText_x.text = gyro_x.ToString();
+            animator_fight(gyro_x);
             Monster_Spown();
         }
     }
 
     private void LateUpdate()
     {
-        act_play.SetBool("Attack", false);
-        act_play.SetBool("Defend", false);
-        Attack_range.SetActive(false);
+        //act_play.SetBool("Attack", false);
+        //act_play.SetBool("Defend", false);
     }
 
     void animator_fight(float Gyro_x)

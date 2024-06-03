@@ -32,13 +32,18 @@ public class Joy_control : MonoBehaviour
             return;
         }
 
-        //Quaternion dirQuat = Quaternion.LookRotation(moveVec);
-        //Quaternion moveQuat = Quaternion.Slerp(rigid.rotation, dirQuat, 0.3f);
-        //rigid.MoveRotation(moveQuat);
+        Quaternion dirQuat = Quaternion.LookRotation(moveVec);
+        Quaternion moveQuat = Quaternion.Slerp(rigid.rotation, dirQuat, 0.3f);
+        rigid.MoveRotation(moveQuat);
     }
 
     private void LateUpdate()
     {
+        if(moveVec.sqrMagnitude> 0) 
+        {
+            anim.SetBool("Attack", false);
+            anim.SetBool("Defend", false);
+        }
         anim.SetFloat("Run", moveVec.sqrMagnitude);
     }
 }

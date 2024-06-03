@@ -12,6 +12,8 @@ public class ExerciseManager : MonoBehaviour
     [Header("Text")]
     public Text stepsText;
     public Text GoldText;
+    public Text movelenText;
+    public Text TimerText;
 
     [Header("character")]
     public Rigidbody player;
@@ -24,22 +26,17 @@ public class ExerciseManager : MonoBehaviour
     [Header("Move")]
     public float moveSpeed;
 
-    delegate IEnumerator exer_mode(double speed);
     GpsLocation GpsLocation;
-    bool isUpdating;
-    double Player_move_speed = 1.6d;
+    double Player_move_speed = 0.5d;
 
-    public Text GPSOut;
-    public Text GPSLength;
-    public Text GPSUpdateLength;
-
-    float Waitingtime;
+    double lengthData = 0;
     float timer;
     int modes = 0;
     int FirstStep;
     int post_count = 0;
     int nowGenvec = 0;
     int count;
+    int stack = 0;
     int Gold;
 
     // Start is called before the first frame update
@@ -47,27 +44,21 @@ public class ExerciseManager : MonoBehaviour
     {
         //FirstStep = StepCounter.current.stepCounter.ReadValue();
         count = 0;
-        timer = 1.0f;
-        Waitingtime = 1.0f;
+        timer = 0.0f;
         moveSpeed= 10.0f;
-        GpsLocation = GetComponent<GpsLocation>();
-        Exercise_mode(modes);
+        GpsLocation = new GpsLocation();
+        movelenText.text = "0";
+        //Exercise_mode(modes);
         GameObject.Instantiate(Map, new Vector3(0, 0, nowGenvec), Quaternion.identity).transform.parent = Ground.transform;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Generate_Map();
         if (!LinearAccelerationSensor.current.enabled)
         {
             Debug.Log("The Device is not enabled");
             InputSystem.EnableDevice(LinearAccelerationSensor.current);
-        }
-
-        if (!Permission.HasUserAuthorizedPermission(Permission.FineLocation))
-        {
-            Permission.RequestUserPermission(Permission.FineLocation);
-            Permission.RequestUserPermission(Permission.CoarseLocation);
         }
 
         if (!StepCounter.current.enabled)
@@ -83,21 +74,29 @@ public class ExerciseManager : MonoBehaviour
                 GameManager.instance.player.Get_steps(count);
                 stepsText.text = count.ToString();
                 GoldText.text = GameManager.instance.player.Read_coin().ToString();
-                GPSLength.text = GameManager.instance.player.Read_length().ToString();
+                movelenText.text = (GameManager.instance.player.Read_length() - lengthData).ToString("F2");
                 Move();
-                if (post_count != count && !isUpdating)
+                if (post_count != count)
                 {
-                    GpsLocation.StartCoroutine(GpsLocation.Getlocation_Run(Player_move_speed));
-                    isUpdating = !isUpdating;
                     post_count = count;
                 }
                 Generate_Map();
+                Timer();
             }
             else
             {
                 getCount();
             }
         }
+    }
+
+    void Timer()
+    {
+        timer += Time.deltaTime;
+        int hour = (int)Mathf.Floor(timer / 3600);
+        int minute = (int)Mathf.Floor((timer%3600) / 60);
+        int secend = (int)Mathf.Floor((timer % 3600) % 60);
+        TimerText.text = hour.ToString("D2") + ":" + minute.ToString("D2") + ":" + secend.ToString("D2");
     }
 
     void getCount()
@@ -110,12 +109,21 @@ public class ExerciseManager : MonoBehaviour
     {
         if (count > 0 && post_count != count)
         {
-            if (!act_play.GetBool("Run"))
+            if (act_play.GetFloat("Run") < 1f)
             {
-                act_play.SetBool("Run", true);
+                act_play.SetFloat("Run", 1f);
             }
             player.transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
+            stack = 0;
             //player.AddForce(Vector3.forward * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
+        }
+        else if(post_count == count)
+        {
+            if (stack > 50)
+            {
+                act_play.SetFloat("Run", 0.0f);
+            }
+            stack++;
         }
     }
 

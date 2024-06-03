@@ -18,10 +18,27 @@ public class GpsLocation : MonoBehaviour
     double[] latitude = { -500.0d, 0.0d };
     double[] longitude = { -500.0d, 0.0d };
 
-    double length;
-    double U_length;
+    double length = 0;
+    double U_length = 0;
     int countTime = 0;
-    int steps;
+    int steps = 0;
+    int bef_steps = 0;
+
+    private void Awake()
+    {
+        length = GameManager.instance.player.Read_length();
+    }
+
+    public void Update()
+    {
+        steps = GameManager.instance.player.Read_steps();
+        if(!isUpdating && steps != bef_steps)
+        {
+            StartCoroutine(Getlocation_Run(0.5d));
+            isUpdating = !isUpdating;
+            bef_steps = steps;
+        }
+    }
 
     public IEnumerator Getlocation_Run(double speed)
     {
@@ -48,7 +65,7 @@ public class GpsLocation : MonoBehaviour
         // service didn't init in 20 sec
         if (Maxwait < 1)
         {
-            //GPSOut.text = "Time Out";
+            GPSOut.text = "Time Out";
             print("timed out");
             yield break;
         }
@@ -56,7 +73,7 @@ public class GpsLocation : MonoBehaviour
         // connection failed
         if (Input.location.status == LocationServiceStatus.Failed)
         {
-            //GPSOut.text = "Unable to determine device location";
+            GPSOut.text = "Unable to determine device location";
             yield break;
         }
         else
@@ -64,20 +81,23 @@ public class GpsLocation : MonoBehaviour
             // Access granted
             double distence = Getresult();
 
-            if(distence > speed && distence < (speed * 3)) 
-            { 
+            if(distence > speed ) //&& distence < (speed * 3)
+            {
                 U_length = Math.Round(distence, 6);
             }
             else { U_length = length / countTime; }
 
             countTime += 3 - Maxwait;
 
-            //GPSUpdateLength.text = U_length.ToString();
-
-            length += U_length;
-            GameManager.instance.player.Get_lengths(length);
+            GPSUpdateLength.text = U_length.ToString();
+            if (U_length > 0)
+            {
+                length += U_length;
+                GameManager.instance.player.Get_lengths(length);
+            }
             U_length = 0;
-            //GPSLength.text = "" + length;
+            GPSLength.text = "" + length;
+            yield return new WaitForSeconds(1);
         }
 
         isUpdating = !isUpdating;
@@ -123,11 +143,17 @@ public class GpsLocation : MonoBehaviour
 
     double deg2rad(double deg)
     {
-        return (double)(deg * Math.PI / (double)180.0d);
+        if (!double.IsInfinity((double)(deg * Math.PI / (double)180.0d)))
+            return (double)(deg * Math.PI / (double)180.0d);
+        else
+            return 0;
     }
 
     double rad2deg(double rad)
     {
-        return (double)(rad * (double)180.0d / Math.PI);
+        if(!double.IsInfinity((double)(rad * (double)180.0d / Math.PI)))
+            return (double)(rad * (double)180.0d / Math.PI);
+        else
+            return 0;
     }
 }
