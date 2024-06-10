@@ -20,6 +20,13 @@
             "itemPrice": 100000.0,
             "description": "A nice shoes.",
             "spritePath": "ItemImg/boots"
+        },
+		{
+            "itemName": "테스트 상품",
+            "itemID": 4,
+            "itemPrice": 100.0,
+            "description": "test",
+            "spritePath": "ItemImg/test"
         }
     ]
 }

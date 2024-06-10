@@ -51,8 +51,11 @@ public class ScrollViewManager : MonoBehaviour
             }
             else if(merch.itemName.text.ToString() == "전설의 방패")
                 GameManager.instance.player.status[2] += 10; //방어력 증가
+
             else if(merch.itemName.text.ToString() == "전설의 신발")
                 GameManager.instance.player.status[2] += 20; //방어력 증가
+
+            GameManager.instance.player.coins -= (int)merch.itemPrice; // 돈 빠져나감
             buySound[0].Play();
         }
         else{
