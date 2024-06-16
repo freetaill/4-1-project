@@ -42,9 +42,10 @@ public class Player
     // 걸음 수, 레벨 관리
     public void Get_steps(int steps)
     {
-        Daily_steps[top] = steps;
-        level = 1+steps / 1000;
-        exp = steps - (level - 1) * 1000;
+        Daily_steps[top] += steps;
+        total_steps += steps;
+        level = 1 + total_steps / 1000;
+        exp = total_steps - (level - 1) * 1000;
     }
 
     public int Read_steps() { return Daily_steps[top]; }

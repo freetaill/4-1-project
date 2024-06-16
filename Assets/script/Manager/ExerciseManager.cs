@@ -49,6 +49,7 @@ public class ExerciseManager : MonoBehaviour
         timer = 0.0f;
         //moveSpeed= 200.0f;
         movelenText.text = "0";
+        post_count = 0;
         //Exercise_mode(modes);
         GameObject.Instantiate(Map, new Vector3(0, 0, nowGenvec), Quaternion.identity).transform.parent = Ground.transform;
     }
@@ -72,7 +73,7 @@ public class ExerciseManager : MonoBehaviour
             if (FirstStep != 0)
             {
                 count = StepCounter.current.stepCounter.ReadValue() - FirstStep;
-                GameManager.instance.player.Get_steps(count);
+                GameManager.instance.player.Get_steps(count - post_count);
                 stepsText.text = count.ToString();
                 GoldText.text = GameManager.instance.player.Read_coin().ToString();
                 movelenText.text = (GameManager.instance.player.Read_length() - lengthData).ToString("F1") + "m";
