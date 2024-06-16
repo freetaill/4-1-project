@@ -22,8 +22,12 @@ public class ScrollViewManager : MonoBehaviour
         content = transform.GetChild(0).GetChild(0);
         storeManager = GameObject.Find("StoreManager").GetComponent<StoreManager>();
         UpdateScrollView(storeManager.LoadStoreData());
+        GameManager.instance.player.Add_coin(10000);
     }
-
+    
+    void Update(){
+        hasCoin.text = GameManager.instance.player.coins.ToString();
+    }
     void UpdateScrollView(StoreData storedata) // ?????? ???????
     {
         print("see");
@@ -55,7 +59,7 @@ public class ScrollViewManager : MonoBehaviour
             else if(merch.itemName.text.ToString() == "전설의 신발")
                 GameManager.instance.player.status[2] += 20; //방어력 증가
 
-            GameManager.instance.player.coins -= (int)merch.itemPrice; // 돈 빠져나감
+            GameManager.instance.player.Decrease_coin((int)merch.itemPrice); // 돈 빠져나감
             buySound[0].Play();
         }
         else{
