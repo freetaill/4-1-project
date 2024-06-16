@@ -15,7 +15,7 @@ public class Box_script : MonoBehaviour
     {
         isPlayerEnter = false;
         breakBox = this.gameObject.GetComponent<AudioSource>();
-        goldAmount = Random.Range(100, 500);
+        goldAmount = Random.Range(10000, 50000);
     }
 
     // Update is called once per frame
@@ -47,14 +47,14 @@ public class Box_script : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "player")
+        if (other.CompareTag("player"))
         {
             isPlayerEnter = true;
         }
     }
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "player")
+        if (other.CompareTag("player"))
         {
             isPlayerEnter = false;
         }

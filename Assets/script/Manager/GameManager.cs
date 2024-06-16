@@ -22,7 +22,7 @@ public class Player
     public int[] Daily_steps = Enumerable.Repeat<int>(0, 100).ToArray<int>();
 
     public double total_lengths = 0;
-    public double[] Daily_lengths = Enumerable.Repeat<double>(0, 100).ToArray<double>();
+    public double[] Daily_lengths = Enumerable.Repeat<double>(0.0f, 100).ToArray<double>();
 
     public int level = 1;
     public int exp = 0;
@@ -43,6 +43,8 @@ public class Player
     public void Get_steps(int steps)
     {
         Daily_steps[top] = steps;
+        level = 1+steps / 1000;
+        exp = steps - (level - 1) * 1000;
     }
 
     public int Read_steps() { return Daily_steps[top]; }
@@ -64,12 +66,16 @@ public class Player
         coins += Add_coins;
     }
 
+    public void Decrease_coin(int coinsf)
+    {
+        coins -= coinsf;
+    }
+
     public int Read_coin() { return coins; }
 
     // 캐릭터 능력치 관리
     public void Write_status() { }
 
-    //캐릭터 아이템 관리
 }
 
 [System.Serializable]

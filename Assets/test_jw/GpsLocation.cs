@@ -26,17 +26,22 @@ public class GpsLocation : MonoBehaviour
 
     private void Awake()
     {
-        length = GameManager.instance.player.Read_length();
+        //length = GameManager.instance.player.Read_length();
+        isUpdating = true;
     }
 
-    public void Update()
+    public void Start()
     {
         steps = GameManager.instance.player.Read_steps();
-        if(!isUpdating && steps != bef_steps)
+        StartCoroutine(LocationUpdateRoutine(0.5d));
+    }
+
+    private IEnumerator LocationUpdateRoutine(double speed)
+    {
+        while (true)
         {
-            StartCoroutine(Getlocation_Run(0.5d));
-            isUpdating = !isUpdating;
-            bef_steps = steps;
+            yield return StartCoroutine(Getlocation_Run(speed));
+            yield return new WaitForSeconds(3f); // 3초 대기 후 다음 갱신 실행
         }
     }
 
@@ -50,7 +55,7 @@ public class GpsLocation : MonoBehaviour
 
         // check if user has location service enabled
         if (!Input.location.isEnabledByUser)
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(3f);
 
         Input.location.Start();
 
@@ -58,7 +63,7 @@ public class GpsLocation : MonoBehaviour
         int Maxwait = 3;
         while (Input.location.status == LocationServiceStatus.Initializing && Maxwait > 0)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1f);
             Maxwait--;
         }
 
@@ -81,11 +86,11 @@ public class GpsLocation : MonoBehaviour
             // Access granted
             double distence = Getresult();
 
-            if(distence > speed ) //&& distence < (speed * 3)
+            if(distence > speed && distence < (speed * 3))
             {
                 U_length = Math.Round(distence, 6);
             }
-            else { U_length = length / countTime; }
+            //else { U_length = length / countTime; }
 
             countTime += 3 - Maxwait;
 
@@ -97,10 +102,8 @@ public class GpsLocation : MonoBehaviour
             }
             U_length = 0;
             GPSLength.text = "" + length;
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1f);
         }
-
-        isUpdating = !isUpdating;
         Input.location.Stop();
     }// end of GPS
 

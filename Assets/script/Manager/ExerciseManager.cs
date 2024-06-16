@@ -14,10 +14,13 @@ public class ExerciseManager : MonoBehaviour
     public Text GoldText;
     public Text movelenText;
     public Text TimerText;
+    public Text LevelText;
+    public Text ExpText;
 
     [Header("character")]
     public Rigidbody player;
     public Animator act_play;
+    public Slider expbar;
 
     [Header("Object")]
     public GameObject Map;
@@ -26,7 +29,6 @@ public class ExerciseManager : MonoBehaviour
     [Header("Move")]
     public float moveSpeed;
 
-    GpsLocation GpsLocation;
     double Player_move_speed = 0.5d;
 
     double lengthData = 0;
@@ -45,8 +47,7 @@ public class ExerciseManager : MonoBehaviour
         //FirstStep = StepCounter.current.stepCounter.ReadValue();
         count = 0;
         timer = 0.0f;
-        moveSpeed= 10.0f;
-        GpsLocation = new GpsLocation();
+        //moveSpeed= 200.0f;
         movelenText.text = "0";
         //Exercise_mode(modes);
         GameObject.Instantiate(Map, new Vector3(0, 0, nowGenvec), Quaternion.identity).transform.parent = Ground.transform;
@@ -74,7 +75,7 @@ public class ExerciseManager : MonoBehaviour
                 GameManager.instance.player.Get_steps(count);
                 stepsText.text = count.ToString();
                 GoldText.text = GameManager.instance.player.Read_coin().ToString();
-                movelenText.text = (GameManager.instance.player.Read_length() - lengthData).ToString("F2");
+                movelenText.text = (GameManager.instance.player.Read_length() - lengthData).ToString("F1") + "m";
                 Move();
                 if (post_count != count)
                 {
@@ -82,12 +83,16 @@ public class ExerciseManager : MonoBehaviour
                 }
                 Generate_Map();
                 Timer();
+                LevelText.text = GameManager.instance.player.Read_level().ToString();
+                ExpText.text = (GameManager.instance.player.Read_exp() / 10).ToString() + "%";
+                expbar.value = GameManager.instance.player.Read_exp();
             }
             else
             {
                 getCount();
             }
         }
+
     }
 
     void Timer()
@@ -113,9 +118,10 @@ public class ExerciseManager : MonoBehaviour
             {
                 act_play.SetFloat("Run", 1f);
             }
-            player.transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
-            stack = 0;
+            player.MovePosition(player.position + Vector3.forward * moveSpeed * Time.deltaTime);
+            //player.transform.Translate(Vector3.forward * moveSpeed * Time.deltaTime);
             //player.AddForce(Vector3.forward * moveSpeed * Time.deltaTime, ForceMode.VelocityChange);
+            stack = 0;
         }
         else if(post_count == count)
         {
@@ -166,4 +172,5 @@ public class ExerciseManager : MonoBehaviour
         GameManager.instance.save();
         SceneManager.LoadScene("Main_Scene");
     }
+
 }

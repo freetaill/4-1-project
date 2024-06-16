@@ -8,6 +8,7 @@ public class Monster : MonoBehaviour
 {
     public Transform target;
     GameObject obj;
+    BoxCollider boxcollider;
 
     NavMeshAgent nmAgent;
 
@@ -19,10 +20,12 @@ public class Monster : MonoBehaviour
     {
         this.AddComponent<NavMeshAgent>();
         gameObject.AddComponent<Rigidbody>();
+        boxcollider= gameObject.AddComponent<BoxCollider>();
         nmAgent = GetComponent<NavMeshAgent>();
         nmAgent.stoppingDistance= 2;
         obj = GameObject.FindWithTag("player");
         goldAmount = Random.Range(100, 500);
+        isHit = false;
     }
 
     // Update is called once per frame
@@ -40,7 +43,7 @@ public class Monster : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Hit_range"))
+        if (other.tag == "Hit_range")
         {
             isHit = true;
         }
@@ -48,7 +51,7 @@ public class Monster : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Hit_range"))
+        if (other.tag == "Hit_range")
         {
             isHit = true;
         }
@@ -56,7 +59,7 @@ public class Monster : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Hit_range"))
+        if (other.tag == "Hit_range")
         {
             isHit = true;
         }
